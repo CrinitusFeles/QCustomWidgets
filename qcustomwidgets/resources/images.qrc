@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource prefix="png">
+<file alias="control-panel">..\assets\png\control-panel.png</file>
+<file alias="control">..\assets\png\control.png</file>
+<file alias="icon1">..\assets\png\icon1.png</file>
+<file alias="settings">..\assets\png\settings.png</file>
+<file alias="update">..\assets\png\update.png</file>
+</qresource>
+</RCC>

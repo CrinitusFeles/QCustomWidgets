@@ -1,0 +1,28 @@
+[project]
+name = "qcustomwidgets"
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "loguru>=0.7.3",
+    "qcustomwindow",
+    "typing-extensions>=4.15.0",
+]
+
+[project.optional-dependencies]
+pyside = [
+    "pyside6>=6.9.2",
+]
+
+[tool.setuptools.package-data]
+"*" = ["*.ui", "*.svg", "*.png"]
+
+[tool.uv]
+config-settings = { editable_mode = "compat" }
+
+[tool.uv.sources]
+qcustomwindow = { git = "https://github.com/CrinitusFeles/QCustomWindow" }
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["qcustomwidgets*"]

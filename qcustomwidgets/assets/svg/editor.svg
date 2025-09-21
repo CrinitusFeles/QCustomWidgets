@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 width="800px" height="800px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<g>
+	<g>
+		<path fill="#394240" d="M16,32c7.445,0,13.648-5.109,15.434-12H60c2.211,0,4-1.789,4-4s-1.789-4-4-4H31.434
+			C29.648,5.109,23.445,0,16,0C7.164,0,0,7.164,0,16S7.164,32,16,32z M16,8c4.418,0,8,3.582,8,8s-3.582,8-8,8s-8-3.582-8-8
+			S11.582,8,16,8z"/>
+		<path fill="#394240" d="M48,32c-7.445,0-13.648,5.109-15.434,12H4c-2.211,0-4,1.789-4,4s1.789,4,4,4h28.566
+			C34.352,58.891,40.555,64,48,64c8.836,0,16-7.164,16-16S56.836,32,48,32z M48,56c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8
+			S52.418,56,48,56z"/>
+	</g>
+	<circle fill="#45AAB8" cx="48" cy="48" r="8"/>
+	<circle fill="#F76D57" cx="16" cy="16" r="8"/>
+</g>
+</svg>
