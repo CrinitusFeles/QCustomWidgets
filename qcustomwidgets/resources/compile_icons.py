@@ -29,6 +29,20 @@ def compile_qrc():
         resource_path = Path(__file__).parent / f'{filename}.py'
         subprocess.run(['pyside6-rcc', qrc_path, '-o', resource_path])
 
+        old = 'from PySide6 import QtCore'
+        new = (
+        'try:\n'
+        '    from PySide6 import QtCore\n'
+        'except ImportError:\n'
+        '    from PyQt6 import QtCore'
+        )
+        with open(resource_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+            content = content.replace(old, new)
+        with open(resource_path, 'w', encoding='utf-8') as file:
+            file.write(content)
+
+
 
 if __name__ == '__main__':
     collect_files()
