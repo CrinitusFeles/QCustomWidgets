@@ -5,7 +5,10 @@ from .widgets.button import Button
 from .widgets.image_box import ImageBox
 from .widgets.switch import SwitchControl
 from .widgets.tab_widget import TabWidget, TabBar
-from .models.dataframe_model import DataFrameModel
+try:
+    from .models.dataframe_model import DataFrameModel
+except ImportError:
+    print('For using DataFrameModel you need to install pandas')
 from .layouts.flow_layout import FlowLayout
 from .style.palettes import dark, light
 from .style.stylesheets import stylesheet
