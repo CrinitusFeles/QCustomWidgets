@@ -9,6 +9,5 @@ from .layouts.flow_layout import FlowLayout
 from .style.palettes import dark, light
 from .style.stylesheets import stylesheet
 from .designer import run_designer
-from .examples.themed_window import ThemedWindow
 
 __version__ = '0.1.0'
