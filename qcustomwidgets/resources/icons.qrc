@@ -50,11 +50,14 @@
 <file alias="open">..\assets\svg\open.svg</file>
 <file alias="orbit_control">..\assets\svg\orbit_control.svg</file>
 <file alias="pause">..\assets\svg\pause.svg</file>
+<file alias="pin">..\assets\svg\pin.svg</file>
 <file alias="play">..\assets\svg\play.svg</file>
 <file alias="plus">..\assets\svg\plus.svg</file>
 <file alias="prev_page">..\assets\svg\prev_page.svg</file>
 <file alias="python">..\assets\svg\python.svg</file>
 <file alias="register">..\assets\svg\register.svg</file>
+<file alias="repeat-single">..\assets\svg\repeat-single.svg</file>
+<file alias="repeat">..\assets\svg\repeat.svg</file>
 <file alias="replace-all">..\assets\svg\replace-all.svg</file>
 <file alias="replace-single">..\assets\svg\replace-single.svg</file>
 <file alias="righ_arrow_green">..\assets\svg\righ_arrow_green.svg</file>
