@@ -47,6 +47,7 @@
 <file alias="new-file">..\assets\svg\new-file.svg</file>
 <file alias="new-folder">..\assets\svg\new-folder.svg</file>
 <file alias="next_page">..\assets\svg\next_page.svg</file>
+<file alias="open">..\assets\svg\open.svg</file>
 <file alias="orbit_control">..\assets\svg\orbit_control.svg</file>
 <file alias="pause">..\assets\svg\pause.svg</file>
 <file alias="play">..\assets\svg\play.svg</file>
