@@ -22,7 +22,8 @@ ICON_SOURCE = Sequence[ImageBox | str | Path] | ImageBox | str | Path
 class Button(QAbstractButton):
     def __init__(self, text="", icons: ICON_SOURCE | None = None,
                  parent=None, flat: bool = False,
-                 iterate_icons: bool = False, tooltip: str | None = None) -> None:
+                 iterate_icons: bool = False, tooltip: str | None = None,
+                 constant_color: bool = False) -> None:
         super().__init__(parent)
         self.setMinimumSize(50, 25)
         self.setToolTip(tooltip)
@@ -41,6 +42,7 @@ class Button(QAbstractButton):
         # self.icons_stack.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.body_layot.addLayout(self.icons_stack)
 
+        self._icon_constant_color: bool = constant_color
         self._text: str = text
         self.label = QLabel(text)
         if not self._text:
@@ -153,7 +155,8 @@ class Button(QAbstractButton):
                         color: str = "#FFFFFF" if self.isDark() else '#000000'
                     else:
                         color = "#616161" if self.isDark() else "#898989"
-                    icon.change_svg_color(color)
+                    if not self._icon_constant_color:
+                        icon.change_svg_color(color)
             elif t == e.Type.StyleChange:
                 # print('style changed')
                 ...
@@ -227,7 +230,7 @@ class Button(QAbstractButton):
     def enterEvent(self, event) -> None:
         self._hover = True
         icon = self.current_icon()
-        if icon and not self._is_active:
+        if icon and not self._is_active and not self._icon_constant_color:
             color: str = "#FFFFFF" if self.isDark() else '#000000'
             icon.change_svg_color(color)
         super().enterEvent(event)
@@ -236,7 +239,7 @@ class Button(QAbstractButton):
     def leaveEvent(self, a0) -> None:
         self._hover = False
         icon = self.current_icon()
-        if icon and not self._is_active:
+        if icon and not self._is_active and not self._icon_constant_color:
             color: str = "#898989" if self.isDark() else '#616161'
             icon.change_svg_color(color)
         super().leaveEvent(a0)
