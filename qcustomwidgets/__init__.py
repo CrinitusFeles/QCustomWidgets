@@ -1,6 +1,6 @@
 from .resources import icons
 from .resources import images
-from .resources.compile_icons import svg_path, png_path
+from .resources.compile_icons import svg_path, png_path, ico_path
 from .widgets.button import Button
 from .widgets.image_box import ImageBox
 from .widgets.switch import SwitchControl

@@ -12,6 +12,10 @@ def png_path():
     return Path(__file__).parents[1] / 'assets' / 'png'
 
 
+def ico_path():
+    return Path(__file__).parents[1] / 'assets' / 'ico'
+
+
 def collect_files() -> None:
     for filename, ext in [('icons', 'svg'), ('images', 'png')]:
         with open(Path(__file__).parent / f'{filename}.qrc', 'w') as f:

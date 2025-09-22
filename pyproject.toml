@@ -18,7 +18,7 @@ pyside = [
 ]
 
 [tool.setuptools.package-data]
-"*" = ["*.ui", "*.svg", "*.png", "*.qrc"]
+"*" = ["*.ui", "*.svg", "*.png", "*.ico", "*.qrc"]
 
 [tool.uv]
 config-settings = { editable_mode = "compat" }
