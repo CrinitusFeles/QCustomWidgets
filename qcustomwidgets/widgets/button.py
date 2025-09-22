@@ -134,6 +134,9 @@ class Button(QAbstractButton):
             return new_color.name()
         return color.name()
 
+    def icon_index(self):
+        return self.icons_stack.currentIndex()
+
     @override
     def changeEvent(self, e: QEvent | None):
         super().changeEvent(e)
@@ -149,13 +152,12 @@ class Button(QAbstractButton):
                 self.styleDict["press"]["background-color"] = f"{self.palette_hex(('base', 'button')[self.is_flat], darker=200)}"
                 self.styleDict["press"]["border-color"] = f"{self.palette_hex(('dark', 'button')[self.is_flat])}"
                 self.styleDict["press"]["color"] = f"{self.palette_hex('text')}"
-                icon = self.current_icon()
-                if icon:
+                if self._icons and not self._icon_constant_color:
                     if self._is_active:
                         color: str = "#FFFFFF" if self.isDark() else '#000000'
                     else:
                         color = "#616161" if self.isDark() else "#898989"
-                    if not self._icon_constant_color:
+                    for icon in self._icons:
                         icon.change_svg_color(color)
             elif t == e.Type.StyleChange:
                 # print('style changed')
@@ -178,11 +180,13 @@ class Button(QAbstractButton):
 
     def current_icon(self) -> ImageBox | None:
         if self._icons:
-            return self._icons[self.icons_stack.currentIndex()]
+            i: int = self.icons_stack.currentIndex()
+            return self._icons[i]
 
     def set_state(self, state: int) -> None:
         if self._icons and state < len(self._icons):
             self.icons_stack.setCurrentIndex(state)
+            self._check_state()
 
     def next_state(self) -> None:
         if self._icons:
@@ -190,6 +194,15 @@ class Button(QAbstractButton):
             if new_state > len(self._icons) - 1:
                 new_state = 0
             self.icons_stack.setCurrentIndex(new_state)
+            self._check_state()
+
+    def _check_state(self):
+        state = self.current_state()
+        if state == 'default':
+            self.leaveEvent(None)
+        elif state == 'hover':
+            self.enterEvent(None)
+
 
     @override
     def setText(self, text: str | None) -> None:
