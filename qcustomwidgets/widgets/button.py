@@ -70,7 +70,7 @@ class Button(QAbstractButton):
         self.styleDict: dict = {
             "default": {
                 "background-color": "transparent",
-                "border-color": f"{self.palette_hex(('dark', 'button')[flat])}",
+                "border-color": "transparent",
                 "border-width": 1 if not flat else 0,
                 "border-radius": 21,
                 "font-family": None,
@@ -141,7 +141,7 @@ class Button(QAbstractButton):
             t = e.type()
             if t == e.Type.PaletteChange:
                 self.styleDict["default"]["background-color"] = f"{(self.palette_hex('button'), 'transparent')[self.is_flat]}"
-                self.styleDict["default"]["border-color"] = f"{self.palette_hex(('dark', 'button')[self.is_flat])}"
+                self.styleDict["default"]["border-color"] = f"{(self.palette_hex('button'), 'transparent')[self.is_flat]}"
                 self.styleDict["default"]["color"] = f"{self.palette_hex('text')}"
                 self.styleDict["hover"]["background-color"] = f"{self.palette_hex(('base', 'button')[self.is_flat], darker=130)}"
                 self.styleDict["hover"]["border-color"] = f"{self.palette_hex(('dark', 'button')[self.is_flat])}"
