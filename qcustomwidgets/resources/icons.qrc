@@ -64,6 +64,7 @@
 <file alias="save">..\assets\svg\save.svg</file>
 <file alias="schedule">..\assets\svg\schedule.svg</file>
 <file alias="search">..\assets\svg\search.svg</file>
+<file alias="show">..\assets\svg\show.svg</file>
 <file alias="solar-system">..\assets\svg\solar-system.svg</file>
 <file alias="stop">..\assets\svg\stop.svg</file>
 <file alias="table">..\assets\svg\table.svg</file>
