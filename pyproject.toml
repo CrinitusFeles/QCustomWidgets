@@ -4,7 +4,9 @@ version = "0.1.0"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "app-updater",
     "loguru>=0.7.3",
+    "perlin-noise>=1.14",
     "qasync>=0.28.0",
     "qcustomwindow",
     "typing-extensions>=4.15.0",
@@ -23,6 +25,7 @@ config-settings = { editable_mode = "compat" }
 
 [tool.uv.sources]
 qcustomwindow = { git = "https://github.com/CrinitusFeles/QCustomWindow" }
+app-updater = { git = "https://github.com/CrinitusFeles/AppUpdater" }
 
 [tool.setuptools.packages.find]
 where = ["."]
