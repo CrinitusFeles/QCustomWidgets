@@ -69,8 +69,8 @@ class Button(QAbstractButton):
             self.setGraphicsEffect(self.shadow)
         self.styleDict: dict = {
             "default": {
-                "background-color": "transparent",
-                "border-color": "transparent",
+                "background-color": f"{(self.palette_hex('base'), 'transparent')[flat]}",
+                "border-color": f"{self.palette_hex(('dark', 'button')[flat])}",
                 "border-width": 1 if not flat else 0,
                 "border-radius": 21,
                 "font-family": None,
