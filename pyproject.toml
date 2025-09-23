@@ -5,16 +5,16 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "app-updater",
-    "loguru>=0.7.3",
-    "perlin-noise>=1.14",
-    "qasync>=0.28.0",
+    "loguru",
+    "perlin-noise",
+    "qasync",
     "qcustomwindow",
-    "typing-extensions>=4.15.0",
+    "typing-extensions",
 ]
 
 [project.optional-dependencies]
 pyside = [
-    "pyside6>=6.9.2",
+    "pyside6",
 ]
 
 [tool.setuptools.package-data]
