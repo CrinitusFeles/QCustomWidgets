@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Iterable, Sequence
+from typing import Iterable, Literal, Sequence
 from typing_extensions import override
 from PyQt6.QtCore import Qt, QEvent
 from PyQt6.QtWidgets import (
@@ -23,7 +23,8 @@ class Button(QAbstractButton):
     def __init__(self, text="", icons: ICON_SOURCE | None = None,
                  parent=None, flat: bool = False,
                  iterate_icons: bool = False, tooltip: str | None = None,
-                 constant_color: bool = False) -> None:
+                 constant_color: bool = False,
+                 icon_position: Literal['left', 'right'] = 'left') -> None:
         super().__init__(parent)
         self.setMinimumSize(50, 25)
         self.setToolTip(tooltip)
@@ -40,7 +41,6 @@ class Button(QAbstractButton):
                                alignment=Qt.AlignmentFlag.AlignCenter)
         self.icons_stack = QStackedLayout()
         # self.icons_stack.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.body_layot.addLayout(self.icons_stack)
 
         self._icon_constant_color: bool = constant_color
         self._text: str = text
@@ -49,8 +49,14 @@ class Button(QAbstractButton):
             self.label.setVisible(False)
             if flat:
                 self.setFixedSize(25, 25)
-        self.body_layot.addWidget(self.label,
-                                  alignment=Qt.AlignmentFlag.AlignCenter)
+        if icon_position == 'left':
+            self.body_layot.addLayout(self.icons_stack)
+            self.body_layot.addWidget(self.label,
+                                      alignment=Qt.AlignmentFlag.AlignCenter)
+        else:
+            self.body_layot.addWidget(self.label,
+                                      alignment=Qt.AlignmentFlag.AlignCenter)
+            self.body_layot.addLayout(self.icons_stack)
 
         self._icons: list[ImageBox] = []
         if icons is not None:
