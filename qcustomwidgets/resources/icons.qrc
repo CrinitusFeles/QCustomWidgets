@@ -21,6 +21,7 @@
 <file alias="cloud-done">..\assets\svg\cloud-done.svg</file>
 <file alias="code">..\assets\svg\code.svg</file>
 <file alias="collapse">..\assets\svg\collapse.svg</file>
+<file alias="connected">..\assets\svg\connected.svg</file>
 <file alias="content">..\assets\svg\content.svg</file>
 <file alias="controller">..\assets\svg\controller.svg</file>
 <file alias="dark">..\assets\svg\dark.svg</file>
