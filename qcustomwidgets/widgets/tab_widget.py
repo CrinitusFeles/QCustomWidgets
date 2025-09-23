@@ -43,7 +43,7 @@ class TabWidget(QtWidgets.QTabWidget):
             self.setTabBar(self.tab_bar)
             self.setTabPosition(QtWidgets.QTabWidget.TabPosition.West)
         else:
-            self.tab_bar: QtWidgets.QTabBar = self.tabBar()
+            self.tab_bar: QtWidgets.QTabBar = self.tabBar()  # type: ignore
         self.currentChanged.connect(self._on_current_changed)
         self._last_index: int = 0
 

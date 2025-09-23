@@ -9,9 +9,9 @@ def take_closest(num, collection):
 
 
 class SwitchCircle(QWidget):
-    def __init__(self, parent: QWidget, move_range: tuple, color: str, animation_curve, animation_duration):
+    def __init__(self, parent: "SwitchControl", move_range: tuple, color: str, animation_curve, animation_duration):
         super().__init__(parent=parent)
-        self._parent: QWidget = parent
+        self._parent: SwitchControl = parent
         self.color: str = color
         self.move_range: tuple = move_range
         self.animation = QPropertyAnimation(self, b"pos")

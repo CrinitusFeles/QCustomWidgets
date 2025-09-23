@@ -24,7 +24,7 @@ class ThemedWindow(CustomWindow):
 
         app = QtWidgets.QApplication.instance()
         if app:
-            app.setStyleSheet(stylesheet)
+            app.setStyleSheet(stylesheet)  # type: ignore
         self.is_dark: bool = False
 
     def on_pin(self):
