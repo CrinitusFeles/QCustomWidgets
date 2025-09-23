@@ -12,7 +12,6 @@ from PyQt6.QtWidgets import (QStyleOption, QWidget, QStyle, QLabel, QPushButton,
                             QGraphicsDropShadowEffect, QScrollArea,
                             QGraphicsOpacityEffect, QApplication, QVBoxLayout)
 from qasync import QEventLoop
-from qcustomwindow import CustomWindow
 
 
 class BaseModal(QWidget):
@@ -885,19 +884,17 @@ class CenterRightQCustomModalsManager(ModalsManager):
 
 # from PyQt6.QtMultimediaWidgets import QVideoWidget
 
-class TestModalWindow(CustomWindow):
+class TestModalWindow(QWidget):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Test Modal Window")
-        self.central_widget = QWidget(self)
-        self.body_layout.addWidget(self.central_widget)
         # self.video = QVideoWidget(self)
         # self.video.setMinimumHeight(50)
         # self._layout.addWidget(self.video)
-        self._layout = QVBoxLayout(self.central_widget)
+        self._layout = QVBoxLayout(self)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.scroll_area = QScrollArea(self.central_widget)
+        self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
         self._layout.addWidget(self.scroll_area)
 
