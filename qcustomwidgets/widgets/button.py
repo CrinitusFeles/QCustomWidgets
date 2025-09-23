@@ -222,6 +222,8 @@ class Button(QAbstractButton):
             old_icon: ImageBox = self._icons.pop(index)
             self._icons.insert(index, icon)
             self.icons_stack.replaceWidget(old_icon, icon)
+        else:
+            self._add_icon(icon)
         icon.setFixedSize(18, 18)
         icon.resizeEvent(None)
 
