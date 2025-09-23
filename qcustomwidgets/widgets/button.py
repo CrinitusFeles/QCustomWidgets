@@ -215,7 +215,9 @@ class Button(QAbstractButton):
         return self._text
 
     @override
-    def setIcon(self, icon: ImageBox, index: int = 0) -> None:  # type: ignore
+    def setIcon(self, icon: ImageBox | str | Path, index: int = 0) -> None:  # type: ignore
+        if not isinstance(icon, ImageBox):
+            icon = ImageBox(icon)
         if self._icons:
             old_icon: ImageBox = self._icons.pop(index)
             self._icons.insert(index, icon)
