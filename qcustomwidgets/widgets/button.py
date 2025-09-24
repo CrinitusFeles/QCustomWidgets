@@ -252,6 +252,7 @@ class Button(QAbstractButton):
     @override
     def enterEvent(self, event) -> None:
         self._hover = True
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
         icon = self.current_icon()
         if icon and not self._is_active and not self._icon_constant_color:
             color: str = "#FFFFFF" if self.isDark() else '#000000'
