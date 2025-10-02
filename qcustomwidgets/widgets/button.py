@@ -24,12 +24,14 @@ class Button(QAbstractButton):
                  parent=None, flat: bool = False,
                  iterate_icons: bool = False, tooltip: str | None = None,
                  constant_color: bool = False,
-                 icon_position: Literal['left', 'right'] = 'left') -> None:
+                 icon_position: Literal['left', 'right'] = 'left',
+                 full_size_image: bool = False,
+                 side_margins: int = 15) -> None:
         super().__init__(parent)
         self.setMinimumSize(50, 25)
         self.setToolTip(tooltip)
         self._layout = QHBoxLayout()
-        margin: int = 0 if flat else 15
+        margin: int = 0 if flat else side_margins
         self._layout.setContentsMargins(margin, 0, margin, 0)
         self.setLayout(self._layout)
 
@@ -57,14 +59,13 @@ class Button(QAbstractButton):
             self.body_layot.addWidget(self.label,
                                       alignment=Qt.AlignmentFlag.AlignCenter)
             self.body_layot.addLayout(self.icons_stack)
-
         self._icons: list[ImageBox] = []
         if icons is not None:
             if isinstance(icons, Iterable):
                 for _icon in icons:
-                    self._add_icon(_icon)
+                    self._add_icon(_icon, full_size_image)
             else:
-                self._add_icon(icons)
+                self._add_icon(icons, full_size_image)
 
         self.shadow = QGraphicsDropShadowEffect()
         self.shadow.setBlurRadius(0.8)
@@ -120,12 +121,16 @@ class Button(QAbstractButton):
         if iterate_icons:
             self.clicked.connect(self.next_state)
 
-    def _add_icon(self, icon_source: ImageBox | str | Path):
+        self.changeEvent(QEvent(QEvent.Type.PaletteChange))
+
+    def _add_icon(self, icon_source: ImageBox | str | Path,
+                  full_size_image: bool):
         if isinstance(icon_source, (str, Path)):
             icon: ImageBox = ImageBox(icon_source)
         else:
             icon = icon_source
-        icon.setFixedSize(18, 18)
+        if not full_size_image:
+            icon.setFixedSize(18, 18)
         self.icons_stack.addWidget(icon)
         self._icons.append(icon)
         icon.resizeEvent(None)
@@ -229,7 +234,7 @@ class Button(QAbstractButton):
             self._icons.insert(index, icon)
             self.icons_stack.replaceWidget(old_icon, icon)
         else:
-            self._add_icon(icon)
+            self._add_icon(icon, False)
         icon.setFixedSize(18, 18)
         icon.resizeEvent(None)
 
