@@ -2,6 +2,8 @@
 <RCC version="1.0">
 <qresource prefix="svg">
 <file alias="arrow-bottom">..\assets\svg\arrow-bottom.svg</file>
+<file alias="arrow-down-small">..\assets\svg\arrow-down-small.svg</file>
+<file alias="arrow-up-small">..\assets\svg\arrow-up-small.svg</file>
 <file alias="arrow-up">..\assets\svg\arrow-up.svg</file>
 <file alias="bar-bottom">..\assets\svg\bar-bottom.svg</file>
 <file alias="bar-left">..\assets\svg\bar-left.svg</file>
