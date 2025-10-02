@@ -40,6 +40,7 @@
 <file alias="history">..\assets\svg\history.svg</file>
 <file alias="issue-closed">..\assets\svg\issue-closed.svg</file>
 <file alias="issue-opened">..\assets\svg\issue-opened.svg</file>
+<file alias="issues">..\assets\svg\issues.svg</file>
 <file alias="json">..\assets\svg\json.svg</file>
 <file alias="last_page">..\assets\svg\last_page.svg</file>
 <file alias="left_arrow_green">..\assets\svg\left_arrow_green.svg</file>
