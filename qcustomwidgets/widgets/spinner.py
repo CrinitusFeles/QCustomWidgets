@@ -7,7 +7,7 @@ from PyQt6.QtGui import QPainter, QPen, QColor
 
 
 class Spinner(QWidget):
-    def __init__(self, line_width: int, color: str, size: int) -> None:
+    def __init__(self, line_width: int, color: str, size: int = 25) -> None:
         super().__init__()
         self.w: int = line_width
         self.color = QColor(color)
@@ -15,10 +15,7 @@ class Spinner(QWidget):
         self.speed = 6
         self.play = True
         self.last_call: float = time.time()
-        self.setMinimumWidth(size)
-        self.setMinimumHeight(size)
-        self.setMaximumHeight(size)
-        self.setMaximumWidth(size)
+        self.setFixedSize(size, size)
 
     @override
     def paintEvent(self, a0) -> None:
