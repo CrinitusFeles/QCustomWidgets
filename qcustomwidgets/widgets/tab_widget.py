@@ -289,6 +289,8 @@ class TabWidget(QtWidgets.QTabWidget):
                          [icon] if icon is not None else None,
                          flat=True,
                          tooltip=tooltip)
+            btn.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+
         else:
             btn = icon
         btn.setFixedSize(40, 40)

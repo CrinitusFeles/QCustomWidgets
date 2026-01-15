@@ -72,8 +72,6 @@ class Button(QAbstractButton):
         self.shadow.setColor(QColor(0, 0, 0))
         self.shadow.setOffset(2, 2)
 
-        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
-
         if not flat:
             self.setGraphicsEffect(self.shadow)
         self.styleDict: dict = {
