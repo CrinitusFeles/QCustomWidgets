@@ -15,7 +15,7 @@ TAB_BTN_POS = QtWidgets.QTabBar.ButtonPosition.LeftSide
 class TabBar(QtWidgets.QTabBar):
     onDetachTabSignal = QtCore.pyqtSignal(int, QtCore.QPoint)
     onMoveTabSignal = QtCore.pyqtSignal(int, int)
-    detachedTabDropSignal = QtCore.pyqtSignal(str, int, Button, QtCore.QPoint)
+    detachedTabDropSignal = QtCore.pyqtSignal(str, int, QtCore.QPoint)
 
     def __init__(self, parent=None,
                  position: Literal['left', 'right', 'top', 'bottom'] = 'top'):
@@ -29,7 +29,7 @@ class TabBar(QtWidgets.QTabBar):
         self.dragDropedPos = QtCore.QPoint()
         self.mouseCursor = QtGui.QCursor()
         self.dragInitiated = False
-        self.position = position
+        self.position: Literal['left', 'right', 'top', 'bottom'] = position
 
     def get_tab_buttons_list(self) -> list[Button | None]:
         return [self.tabButton(i, TAB_BTN_POS) for i in range(self.count())]  # type: ignore
@@ -141,8 +141,7 @@ class TabBar(QtWidgets.QTabBar):
     def detachedTabDrop(self, name, dropPos):
         tabDropPos = self.mapFromGlobal(dropPos)
         index = self.tabAt(tabDropPos)
-        btn = self.tabButton(index, TAB_BTN_POS)
-        self.detachedTabDropSignal.emit(name, index, btn, dropPos)
+        self.detachedTabDropSignal.emit(name, index, dropPos)
 
     def paintEvent(self, a0) -> None:
         if self.position in ['left', 'right']:
@@ -257,6 +256,9 @@ class TabWidget(QtWidgets.QTabWidget):
         self.currentChanged.connect(self.set_active_tab)
 
         self.detachedTabs = {}
+        QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Shift+K'), self,
+                                           self.closeDetachedTabs,
+                                           context=QtCore.Qt.ShortcutContext.ApplicationShortcut)
 
         # Close all detached tabs if the application is closed explicitly
         QtWidgets.QApplication.instance().aboutToQuit.connect(self.closeDetachedTabs)  # type: ignore
@@ -378,13 +380,12 @@ class TabWidget(QtWidgets.QTabWidget):
                     del self.detachedTabs[key]
                     break
 
-    @QtCore.pyqtSlot(str, int, Button, QtCore.QPoint)
-    def detachedTabDrop(self, tab_id: str, index: int, icon: Button | None,
-                        dropPos: QtCore.QPoint):
+    @QtCore.pyqtSlot(str, int, QtCore.QPoint)
+    def detachedTabDrop(self, tab_id: str, index: int, dropPos: QtCore.QPoint):
         tabDropPos = self.mapFromGlobal(dropPos)
-        if tabDropPos in self.rect():
-            if tabDropPos.y() < self.tab_bar.height() or self.count() == 0:
-                self.detachedTabs[tab_id].close()
+        if tabDropPos in self.tab_bar.rect():
+            self.detachedTabs[tab_id].close()
+            self.moveTab(self.tab_bar.count() - 1, index)
 
     def closeEvent(self, a0: QtGui.QCloseEvent | None) -> None:
         self.closeDetachedTabs()
@@ -403,15 +404,15 @@ if __name__ == '__main__':
     app.setStyleSheet(stylesheet)
     dark()
     # QtWidgets.QApplication.setStyle(ProxyStyle())
-    w = TabWidget('top')
+    w = TabWidget('right')
     assets = Path(__file__).parents[1] / 'assets' / 'svg'
-    # w.addTabCustom(QtWidgets.QLineEdit('First tab'), "", assets / 'register.svg', 'First tab')
-    # w.addTabCustom(QtWidgets.QLineEdit('Second tab'), "", assets / 'bell.svg', 'Second tab')
-    # w.addTabCustom(QtWidgets.QLineEdit('Third tab'), "", assets / 'camera.svg', 'Third tab')
-    w.addTab(QtWidgets.QLineEdit('First tab'),  "First tab")
-    w.addTab(QtWidgets.QLineEdit('Second tab'), "Second tab")
-    w.addTab(QtWidgets.QLineEdit('Third tab'),  "Third tab")
-    w.tab_bar.setTabIcon(0, QtGui.QIcon(str(assets / 'register.svg')))
+    w.addTabCustom(QtWidgets.QLineEdit('First tab'), "", assets / 'register.svg', 'First tab')
+    w.addTabCustom(QtWidgets.QLineEdit('Second tab'), "", assets / 'bell.svg', 'Second tab')
+    w.addTabCustom(QtWidgets.QLineEdit('Third tab'), "", assets / 'camera.svg', 'Third tab')
+    # w.addTab(QtWidgets.QLineEdit('First tab'),  "First tab")
+    # w.addTab(QtWidgets.QLineEdit('Second tab'), "Second tab")
+    # w.addTab(QtWidgets.QLineEdit('Third tab'),  "Third tab")
+    # w.tab_bar.setTabIcon(0, QtGui.QIcon(str(assets / 'register.svg')))
     w.set_active_tab(0)
     w.resize(640, 480)
     w.show()
