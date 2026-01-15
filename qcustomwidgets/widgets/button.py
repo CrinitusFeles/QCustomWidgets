@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (
     QApplication,
     QStackedLayout
 )
-from PyQt6.QtGui import QColor, QMouseEvent, QPainter, QPen, QBrush, QPalette
+from PyQt6.QtGui import QColor, QMouseEvent, QPainter, QPen, QBrush
 from qcustomwidgets.style.palettes import dark, light
 from qcustomwidgets.widgets.image_box import ImageBox
 
@@ -71,6 +71,8 @@ class Button(QAbstractButton):
         self.shadow.setBlurRadius(0.8)
         self.shadow.setColor(QColor(0, 0, 0))
         self.shadow.setOffset(2, 2)
+
+        self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
 
         if not flat:
             self.setGraphicsEffect(self.shadow)

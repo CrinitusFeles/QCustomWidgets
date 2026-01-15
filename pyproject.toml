@@ -7,6 +7,7 @@ dependencies = [
     "loguru",
     "perlin-noise",
     "qasync",
+    "qcustomwindow",
     "typing-extensions",
 ]
 
@@ -20,6 +21,9 @@ pyside = [
 
 [tool.uv]
 config-settings = { editable_mode = "compat" }
+
+[tool.uv.sources]
+qcustomwindow = { git = "https://github.com/CrinitusFeles/QCustomWindow" }
 
 [tool.setuptools.packages.find]
 where = ["."]
