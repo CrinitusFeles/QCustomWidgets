@@ -31,6 +31,7 @@
 <file alias="disconnected">..\assets\svg\disconnected.svg</file>
 <file alias="document">..\assets\svg\document.svg</file>
 <file alias="download-cloud">..\assets\svg\download-cloud.svg</file>
+<file alias="duplicate">..\assets\svg\duplicate.svg</file>
 <file alias="edit">..\assets\svg\edit.svg</file>
 <file alias="editor">..\assets\svg\editor.svg</file>
 <file alias="exclamation-chat">..\assets\svg\exclamation-chat.svg</file>
