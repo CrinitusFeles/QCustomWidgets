@@ -59,7 +59,7 @@ class ImageBox(QLabel):
             self.source = str(self.source)
 
         if isinstance(self.source, str):
-            if not self.source.startswith((':svg/', ':png/', ':ico/')) and \
+            if not self.source.startswith((':/', ':svg/', ':png/', ':ico/')) and \
                 not Path(self.source).exists():
                 logger.warning(f'Pixmap path error: {self.source} not exists')
             if self.source.endswith(".gif"):
