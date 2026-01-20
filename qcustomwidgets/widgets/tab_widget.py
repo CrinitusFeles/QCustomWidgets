@@ -347,7 +347,9 @@ class TabWidget(QtWidgets.QTabWidget):
 
     def attachTab(self, contentWidget, tab_id: str, name: str,
                   icon: Button | None, insertAt=None):
-        old_index = getattr(contentWidget, '_initial_tab_index')
+        old_index = None
+        if hasattr(contentWidget, '_initial_tab_index'):
+            old_index = getattr(contentWidget, '_initial_tab_index')
         contentWidget.setParent(self)
         del self.detachedTabs[tab_id]
         if icon is None:
