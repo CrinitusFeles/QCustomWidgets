@@ -319,8 +319,6 @@ class TabWidget(QtWidgets.QTabWidget):
 
     @QtCore.pyqtSlot(int, QtCore.QPoint)
     def detachTab(self, index: int, point: QtCore.QPoint):
-
-        # Get the tab content
         name = self.tabText(index)
         icon = self.tabIcon(index)
         button: Button | None = self.tab_bar.tabButton(index, TAB_BTN_POS)  # type: ignore
@@ -349,6 +347,7 @@ class TabWidget(QtWidgets.QTabWidget):
 
     def attachTab(self, contentWidget, tab_id: str, name: str,
                   icon: Button | None, insertAt=None):
+        old_index = getattr(contentWidget, '_initial_tab_index')
         contentWidget.setParent(self)
         del self.detachedTabs[tab_id]
         if icon is None:
@@ -358,14 +357,34 @@ class TabWidget(QtWidgets.QTabWidget):
                 index = self.insertTab(insertAt, contentWidget, name)
         else:
             index: int = self.addTabCustom(contentWidget, name, icon,
-                                           insert_at=insertAt)
+                                           insert_at=old_index)
         if index > -1:
             self.setCurrentIndex(index)
-        self.tab_bar.mouseMoveEvent(QtGui.QMouseEvent(QtCore.QEvent.Type.MouseMove,
-                                                      QtCore.QPointF(10, 10),
-                                                      QtCore.Qt.MouseButton.NoButton,
-                                                      QtCore.Qt.MouseButton.NoButton,
-                                                      QtCore.Qt.KeyboardModifier.NoModifier))
+        self.sort_tabs()
+
+    def _get_index_order(self):
+        index_order = {}
+        for current_index in range(self.count()):
+            if hasattr(self.widget(current_index), '_initial_tab_index'):
+                initial_index = getattr(self.widget(current_index), '_initial_tab_index')
+                if initial_index != current_index:
+                    index_order[initial_index] = current_index
+        return index_order
+
+    def sort_tabs(self):
+        index_order = self._get_index_order()
+        if not index_order:
+            return
+        initial_index = list(index_order.keys())[0]
+        from_index = index_order.pop(initial_index)
+        to_index = initial_index
+        if self.widget(to_index):
+            self.moveTab(from_index, to_index)
+        else:
+            self.moveTab(from_index, abs((self.count() - 1) - to_index))
+        if len(index_order):
+            return self.sort_tabs()
+
 
     def removeTabByName(self, name):
         attached = False
@@ -387,18 +406,22 @@ class TabWidget(QtWidgets.QTabWidget):
         tabDropPos = self.mapFromGlobal(dropPos)
         if tabDropPos in self.tab_bar.rect():
             self.detachedTabs[tab_id].close()
-            self.moveTab(self.tab_bar.count() - 1, index)
+            # self.moveTab(self.tab_bar.count() - 1, index)
 
     def closeEvent(self, a0: QtGui.QCloseEvent | None) -> None:
         self.closeDetachedTabs()
         return super().closeEvent(a0)
 
     def closeDetachedTabs(self):
-        listOfDetachedTabs = []
-        for key in self.detachedTabs:
-            listOfDetachedTabs.append(self.detachedTabs[key])
-        for detachedTab in listOfDetachedTabs:
-            detachedTab.close()
+        detached_tabs: list = sorted(self.detachedTabs.values(),
+                                     key=lambda x: x.contentWidget._initial_tab_index,
+                                     reverse=True)
+        for tab in detached_tabs:
+            tab.close()
+
+    def freeze_tabs(self):
+        for i in range(self.count()):
+            setattr(self.widget(i), '_initial_tab_index', i)
 
 
 if __name__ == '__main__':
@@ -411,6 +434,7 @@ if __name__ == '__main__':
     w.addTabCustom(QtWidgets.QLineEdit('First tab'), "", assets / 'register.svg', 'First tab')
     w.addTabCustom(QtWidgets.QLineEdit('Second tab'), "", assets / 'bell.svg', 'Second tab')
     w.addTabCustom(QtWidgets.QLineEdit('Third tab'), "", assets / 'camera.svg', 'Third tab')
+    w.freeze_tabs()
     # w.addTab(QtWidgets.QLineEdit('First tab'),  "First tab")
     # w.addTab(QtWidgets.QLineEdit('Second tab'), "Second tab")
     # w.addTab(QtWidgets.QLineEdit('Third tab'),  "Third tab")
