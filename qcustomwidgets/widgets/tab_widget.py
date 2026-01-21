@@ -48,10 +48,14 @@ class TabBar(QtWidgets.QTabBar):
             self.dragStartPos = a0.pos()
         self.dragDropedPos.setX(0)
         self.dragDropedPos.setY(0)
-        self.drag_start_time: float = time()
         self.dragInitiated = False
+        i = self.tabAt(self.dragStartPos)
+        if self.currentIndex() != i:
+            self.dragStartPos = QtCore.QPoint()
+            self.setCurrentIndex(i)
+        # QtWidgets.QTabBar.mousePressEvent(self, a0)
 
-        QtWidgets.QTabBar.mousePressEvent(self, a0)
+
 
     def mouseMoveEvent(self, a0: QtGui.QMouseEvent | None):
         if not a0:
@@ -60,7 +64,7 @@ class TabBar(QtWidgets.QTabBar):
         # Determine if the current movement is detected as a drag
         if not self.dragStartPos.isNull():
             distance = (a0.pos() - self.dragStartPos).manhattanLength()
-            if distance < QtWidgets.QApplication.startDragDistance() and time() - self.drag_start_time > 0.03:
+            if distance < QtWidgets.QApplication.startDragDistance():
                 self.dragInitiated = True
 
         # If the current movement is a drag initiated by the left button
