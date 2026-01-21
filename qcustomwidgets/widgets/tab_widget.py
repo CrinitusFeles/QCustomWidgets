@@ -7,6 +7,7 @@ from qcustomwidgets.widgets.button import Button
 from qcustomwidgets.style.palettes import dark
 from qcustomwidgets.style.stylesheets import stylesheet
 from qcustomwindow import CustomWindow
+from time import time
 
 
 TAB_BTN_POS = QtWidgets.QTabBar.ButtonPosition.LeftSide
@@ -47,7 +48,7 @@ class TabBar(QtWidgets.QTabBar):
             self.dragStartPos = a0.pos()
         self.dragDropedPos.setX(0)
         self.dragDropedPos.setY(0)
-
+        self.drag_start_time: float = time()
         self.dragInitiated = False
 
         QtWidgets.QTabBar.mousePressEvent(self, a0)
@@ -59,7 +60,7 @@ class TabBar(QtWidgets.QTabBar):
         # Determine if the current movement is detected as a drag
         if not self.dragStartPos.isNull():
             distance = (a0.pos() - self.dragStartPos).manhattanLength()
-            if distance < QtWidgets.QApplication.startDragDistance():
+            if distance < QtWidgets.QApplication.startDragDistance() and time() - self.drag_start_time > 0.03:
                 self.dragInitiated = True
 
         # If the current movement is a drag initiated by the left button
