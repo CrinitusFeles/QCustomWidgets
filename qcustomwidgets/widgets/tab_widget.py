@@ -336,8 +336,8 @@ class TabWidget(QtWidgets.QTabWidget):
         contentWidgetRect = contentWidget.frameGeometry()
         # Create a new detached tab window
         detachedTab = DetachedTab(name, contentWidget, button)
+        detachedTab.setWindowIcon(self.windowIcon())
         detachedTab.setWindowModality(QtCore.Qt.WindowModality.NonModal)
-        # detachedTab.setWindowIcon(icon)
         detachedTab.setGeometry(contentWidgetRect)
         # detachedTab.resize(600, 600)
         detachedTab.onCloseSignal.connect(self.attachTab)
