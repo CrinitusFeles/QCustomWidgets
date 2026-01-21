@@ -1,5 +1,12 @@
 
 stylesheet = """
+QListView::item:selected {
+    background-color: palette(alternate-base);
+}
+QListView::item:hover {
+    background-color: palette(midlight);
+}
+
 /*
  * QGroupBox
  */
