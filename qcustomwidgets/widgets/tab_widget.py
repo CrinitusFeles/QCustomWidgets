@@ -262,11 +262,15 @@ class TabWidget(QtWidgets.QTabWidget):
 
         # Close all detached tabs if the application is closed explicitly
         QtWidgets.QApplication.instance().aboutToQuit.connect(self.closeDetachedTabs)  # type: ignore
+        self.freezed_tabs: bool = False
 
     def setMovable(self, movable):
         pass
 
     def set_active_tab(self, val: int):
+        c = self.count()
+        if not c:
+            return
         buttons = self.tab_bar.get_tab_buttons_list()
         for i, btn in enumerate(buttons):
             if btn:
@@ -362,7 +366,6 @@ class TabWidget(QtWidgets.QTabWidget):
                                            insert_at=old_index)
         if index > -1:
             self.setCurrentIndex(index)
-        self.sort_tabs()
 
     def _get_index_order(self):
         index_order = {}
@@ -386,7 +389,6 @@ class TabWidget(QtWidgets.QTabWidget):
             self.moveTab(from_index, abs((self.count() - 1) - to_index))
         if len(index_order):
             return self.sort_tabs()
-
 
     def removeTabByName(self, name):
         attached = False
@@ -415,34 +417,46 @@ class TabWidget(QtWidgets.QTabWidget):
         return super().closeEvent(a0)
 
     def closeDetachedTabs(self):
-        detached_tabs: list = sorted(self.detachedTabs.values(),
-                                     key=lambda x: x.contentWidget._initial_tab_index,
-                                     reverse=True)
-        for tab in detached_tabs:
-            tab.close()
+        tabs = list(self.detachedTabs.values())
+        if self.freezed_tabs:
+            detached_tabs: list = sorted(tabs,
+                                        key=lambda x: x.contentWidget._initial_tab_index,
+                                        reverse=True)
+            for tab in detached_tabs:
+                tab.close()
+        else:
+            for tab in tabs:
+                tab.close()
+        self.sort_tabs()
 
     def freeze_tabs(self):
+        self.freezed_tabs = True
         for i in range(self.count()):
-            setattr(self.widget(i), '_initial_tab_index', i)
+            w = self.widget(i)
+            setattr(w, '_initial_tab_index', i)
 
 
 if __name__ == '__main__':
+    from qcustomwindow import CustomWindow
     app = QtWidgets.QApplication([])
     app.setStyleSheet(stylesheet)
     dark()
     # QtWidgets.QApplication.setStyle(ProxyStyle())
+    window = CustomWindow()
     w = TabWidget('right')
     assets = Path(__file__).parents[1] / 'assets' / 'svg'
     w.addTabCustom(QtWidgets.QLineEdit('First tab'), "", assets / 'register.svg', 'First tab')
     w.addTabCustom(QtWidgets.QLineEdit('Second tab'), "", assets / 'bell.svg', 'Second tab')
     w.addTabCustom(QtWidgets.QLineEdit('Third tab'), "", assets / 'camera.svg', 'Third tab')
+    w.addTabCustom(QtWidgets.QLineEdit('Fourth tab'), "", assets / 'disconnected.svg', 'Fourth tab')
     w.freeze_tabs()
     # w.addTab(QtWidgets.QLineEdit('First tab'),  "First tab")
     # w.addTab(QtWidgets.QLineEdit('Second tab'), "Second tab")
     # w.addTab(QtWidgets.QLineEdit('Third tab'),  "Third tab")
     # w.tab_bar.setTabIcon(0, QtGui.QIcon(str(assets / 'register.svg')))
     w.set_active_tab(0)
-    w.resize(640, 480)
-    w.show()
+    window.addWidget(w)
+    # w.resize(640, 480)
+    window.show()
 
     app.exec()
