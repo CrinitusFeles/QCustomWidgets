@@ -5,6 +5,7 @@ class LogBrowser(QtWidgets.QTextBrowser):
     def __init__(self) -> None:
         super().__init__()
         self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.show_context_menu)
 
     def show_context_menu(self, point):
         menu = self.createStandardContextMenu()
