@@ -7,7 +7,6 @@ from qcustomwidgets.widgets.button import Button
 from qcustomwidgets.style.palettes import dark
 from qcustomwidgets.style.stylesheets import stylesheet
 from qcustomwindow import CustomWindow
-from time import time
 
 
 TAB_BTN_POS = QtWidgets.QTabBar.ButtonPosition.LeftSide
@@ -181,7 +180,7 @@ class DetachedTab(CustomWindow):
     def __init__(self, tab_name: str, contentWidget: QtWidgets.QWidget,
                  icon: Button | None = None):
         super().__init__()
-        self.button = icon
+        self.button: Button | None = icon
         self.tab_name: str = tab_name
         self.title_label: str  = tab_name
         if not tab_name:
@@ -191,9 +190,9 @@ class DetachedTab(CustomWindow):
                 self.setTitle(self.title_label)
         else:
             self.setTitle(tab_name)
-        self.contentWidget = contentWidget
+        self.contentWidget: QtWidgets.QWidget = contentWidget
         self.addWidget(self.contentWidget)
-        if self.button:
+        if self.button and len(self.button._icons):
             self.add_left_widget(self.button)
             self.button.setIconSize(25, 25)
             self.button.show()
@@ -302,9 +301,10 @@ class TabWidget(QtWidgets.QTabWidget):
 
         else:
             btn = icon
-        btn.setFixedSize(40, 40)
-        btn.setIconSize(30, 30)
-        btn.setContentsMargins(5, 5, 5, 5)
+        if icon is not None:
+            btn.setFixedSize(40, 40)
+            btn.setIconSize(30, 30)
+            btn.setContentsMargins(5, 5, 5, 5)
         btn.pressed.connect(lambda: self.setCurrentIndex(index))
         self.tab_bar.setTabButton(index, TAB_BTN_POS, btn)
         self.tab_bar.setTabToolTip(index, btn.toolTip())
@@ -328,7 +328,7 @@ class TabWidget(QtWidgets.QTabWidget):
 
     @QtCore.pyqtSlot(int, QtCore.QPoint)
     def detachTab(self, index: int, point: QtCore.QPoint):
-        name = self.tabText(index)
+        name: str = self.tabText(index)
         icon = self.tabIcon(index)
         button: Button | None = self.tab_bar.tabButton(index, TAB_BTN_POS)  # type: ignore
         self.tab_bar.setTabButton(index, TAB_BTN_POS, None)
@@ -367,8 +367,12 @@ class TabWidget(QtWidgets.QTabWidget):
             else:
                 index = self.insertTab(insertAt, contentWidget, name)
         else:
-            index: int = self.addTabCustom(contentWidget, name, icon,
-                                           insert_at=old_index)
+            if len(icon._icons):
+                index: int = self.addTabCustom(contentWidget, name, icon,
+                                               insert_at=old_index)
+            else:
+                index = self.addTabCustom(contentWidget, name, insert_at=old_index)
+
         if index > -1:
             self.setCurrentIndex(index)
 
@@ -448,12 +452,16 @@ if __name__ == '__main__':
     dark()
     # QtWidgets.QApplication.setStyle(ProxyStyle())
     window = CustomWindow()
-    w = TabWidget('right')
+    w = TabWidget()
     assets = Path(__file__).parents[1] / 'assets' / 'svg'
-    w.addTabCustom(QtWidgets.QLineEdit('First tab'), "", assets / 'register.svg', 'First tab')
-    w.addTabCustom(QtWidgets.QLineEdit('Second tab'), "", assets / 'bell.svg', 'Second tab')
-    w.addTabCustom(QtWidgets.QLineEdit('Third tab'), "", assets / 'camera.svg', 'Third tab')
-    w.addTabCustom(QtWidgets.QLineEdit('Fourth tab'), "", assets / 'disconnected.svg', 'Fourth tab')
+    w.addTabCustom(QtWidgets.QLineEdit('First tab'), 'First tab')
+    w.addTabCustom(QtWidgets.QLineEdit('Second tab'), 'Second tab')
+    w.addTabCustom(QtWidgets.QLineEdit('Third tab'), 'Third tab')
+    w.addTabCustom(QtWidgets.QLineEdit('Fourth tab'), 'Fourth tab')
+    # w.addTabCustom(QtWidgets.QLineEdit('First tab'), "", assets / 'register.svg', 'First tab')
+    # w.addTabCustom(QtWidgets.QLineEdit('Second tab'), "", assets / 'bell.svg', 'Second tab')
+    # w.addTabCustom(QtWidgets.QLineEdit('Third tab'), "", assets / 'camera.svg', 'Third tab')
+    # w.addTabCustom(QtWidgets.QLineEdit('Fourth tab'), "", assets / 'disconnected.svg', 'Fourth tab')
     w.freeze_tabs()
     # w.addTab(QtWidgets.QLineEdit('First tab'),  "First tab")
     # w.addTab(QtWidgets.QLineEdit('Second tab'), "Second tab")
