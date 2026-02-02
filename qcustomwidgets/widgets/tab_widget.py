@@ -321,7 +321,12 @@ class TabWidget(QtWidgets.QTabWidget):
 
         self.removeTab(fromIndex)
         if button:
-            self.addTabCustom(widget, text, button, insert_at=toIndex)
+            if not text:
+                text = button.text()
+            if len(button._icons):
+                self.addTabCustom(widget, text, button, insert_at=toIndex)
+            else:
+                self.addTabCustom(widget, text, insert_at=toIndex)
         else:
             self.insertTab(toIndex, widget, icon, text)
         self.setCurrentIndex(toIndex)
