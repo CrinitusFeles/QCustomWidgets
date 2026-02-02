@@ -1,5 +1,15 @@
 
 stylesheet = """
+QTableView::item {
+    padding-right: 30px;
+}
+QTableView {
+    selection-background-color: #663DAD;
+}
+QTableView::item:selected {
+    selection-background-color: #663DAD;
+}
+
 QListView::item:selected {
     background-color: palette(alternate-base);
 }
