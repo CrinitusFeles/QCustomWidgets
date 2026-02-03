@@ -79,10 +79,9 @@ class ImageBox(QLabel):
         else:
             raise TypeError(f"Argument 1 has unexpected type '{type(self.source)}'")
 
-        if isinstance(self.source, QMovie):
-            if self._movie:
-                self.setMovie(self._movie)
-                self._movie.start()
+        if self._movie is not None:
+            self.setMovie(self._movie)
+            self._movie.start()
         elif self.origin_pixmap:
             self.setPixmap(self.origin_pixmap)
         self.resizeEvent(None)
