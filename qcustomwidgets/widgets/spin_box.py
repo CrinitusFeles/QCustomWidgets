@@ -15,6 +15,7 @@ class SpinBox(QtWidgets.QAbstractSpinBox):
         QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Q'), self,
                                            self.toggle_hex_mode,
                                            context=QtCore.Qt.ShortcutContext.WidgetShortcut)
+        self.setValue(0)
 
     def toggle_hex_mode(self) -> None:
         self.is_hex_mode = not self.is_hex_mode
