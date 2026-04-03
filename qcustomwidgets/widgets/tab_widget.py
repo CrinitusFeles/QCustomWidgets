@@ -255,8 +255,10 @@ class TabWidget(QtWidgets.QTabWidget):
         self.tab_bar.onMoveTabSignal.connect(self.moveTab)
         self.tab_bar.detachedTabDropSignal.connect(self.detachedTabDrop)
         self.setTabBar(self.tab_bar)
-        if tab_bar_position in ['left', 'right']:
+        if tab_bar_position == 'left':
             self.setTabPosition(QtWidgets.QTabWidget.TabPosition.West)
+        elif tab_bar_position == 'right':
+            self.setTabPosition(QtWidgets.QTabWidget.TabPosition.East)
         self.currentChanged.connect(self.set_active_tab)
 
         self.detachedTabs = {}
@@ -296,9 +298,9 @@ class TabWidget(QtWidgets.QTabWidget):
             btn = Button(label,
                          [icon] if icon is not None else None,
                          flat=True,
-                         tooltip=tooltip)
+                         tooltip=tooltip, side_margins=0)
             btn.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents)
-
+            btn.setMinimumSize(0, 0)
         else:
             btn = icon
         if icon is not None:
