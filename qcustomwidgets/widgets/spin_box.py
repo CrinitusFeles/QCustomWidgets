@@ -67,9 +67,13 @@ class SpinBox(QtWidgets.QAbstractSpinBox):
 
     def setMinimum(self, min_val: int) -> None:
         self.min_val = min_val
+        if self.last_valid_val < self.min_val:
+            self.setValue(self.min_val)
 
     def setMaximum(self, max_val: int) -> None:
         self.max_val = max_val
+        if self.last_valid_val > self.max_val:
+            self.setValue(self.max_val)
 
     def setValue(self, val: int) -> None:
         if self.min_val <= val <= self.max_val:
