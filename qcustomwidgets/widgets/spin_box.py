@@ -2,6 +2,7 @@ from PyQt6 import QtWidgets, QtGui, QtCore
 
 
 class SpinBox(QtWidgets.QAbstractSpinBox):
+    valueChanged = QtCore.pyqtSignal(int)
     def __init__(self, parent: QtWidgets.QWidget | None = None) -> None:
         super().__init__(parent)
         self.editingFinished.connect(self.on_editing_finished)
@@ -57,6 +58,7 @@ class SpinBox(QtWidgets.QAbstractSpinBox):
         if self.min_val <= self.last_valid_val + steps <= self.max_val:
             self.last_valid_val += steps
             self._set_val(self.last_valid_val)
+            self.valueChanged.emit(self.last_valid_val)
 
     def setRange(self, min_val: int, max_val: int) -> None:
         self.setMinimum(min_val)
@@ -70,6 +72,8 @@ class SpinBox(QtWidgets.QAbstractSpinBox):
 
     def setValue(self, val: int) -> None:
         if self.min_val <= val <= self.max_val:
+            if self.last_valid_val != val:
+                self.valueChanged.emit(val)
             self.last_valid_val = val
             self._set_val(val)
 
