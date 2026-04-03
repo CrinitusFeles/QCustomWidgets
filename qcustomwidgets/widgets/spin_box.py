@@ -12,10 +12,13 @@ class SpinBox(QtWidgets.QAbstractSpinBox):
         self.min_val: int = 0
         self.max_val: int = 0xFFFFFFFF
         self.is_hex_mode: bool = False
-        QtGui.QShortcut(QtGui.QKeySequence('Ctrl+Q'), self,
+        QtGui.QShortcut(QtGui.QKeySequence('Ctrl+H'), self,
                                            self.toggle_hex_mode,
                                            context=QtCore.Qt.ShortcutContext.WidgetShortcut)
         self.setValue(0)
+        self.setMaximum(self.max_val)
+        self.setSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum,
+                           QtWidgets.QSizePolicy.Policy.Maximum)
 
     def toggle_hex_mode(self) -> None:
         self.is_hex_mode = not self.is_hex_mode
@@ -44,7 +47,7 @@ class SpinBox(QtWidgets.QAbstractSpinBox):
 
     def _set_val(self, val: int) -> None:
         if self.is_hex_mode:
-            if val > 0:
+            if val >= 0:
                 self._line_edit.setText(f'0x{val:02X}')
             else:
                 self._line_edit.setText(f'- 0x{-val:02X}')
@@ -67,20 +70,22 @@ class SpinBox(QtWidgets.QAbstractSpinBox):
 
     def setMinimum(self, min_val: int) -> None:
         self.min_val = min_val
-        if self.last_valid_val < self.min_val:
+        if self.last_valid_val <= self.min_val:
             self.setValue(self.min_val)
 
     def setMaximum(self, max_val: int) -> None:
         self.max_val = max_val
-        if self.last_valid_val > self.max_val:
+        if self.last_valid_val >= self.max_val:
             self.setValue(self.max_val)
+        size: int = self.fontMetrics().boundingRect(f'{self.max_val}').width()
+        self.setMinimumWidth(size + 30)
 
     def setValue(self, val: int) -> None:
         if self.min_val <= val <= self.max_val:
             if self.last_valid_val != val:
                 self.valueChanged.emit(val)
             self.last_valid_val = val
-            self._set_val(val)
+        self._set_val(self.last_valid_val)
 
     def value(self) -> int:
         return self.last_valid_val
@@ -93,6 +98,11 @@ if __name__ == '__main__':
     w.setLayout(_l)
     _l.addWidget(SpinBox())
     _l.addWidget(SpinBox())
-    _l.addWidget(QtWidgets.QSpinBox())
+    sb = QtWidgets.QSpinBox()
+    sb.setMaximum(0xFFFF)
+    sb.setSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum,
+                     QtWidgets.QSizePolicy.Policy.Preferred)
+    _l.addWidget(sb)
     w.show()
+    print(sb.width())
     app.exec()
