@@ -4,17 +4,6 @@ import pandas as pd
 from PyQt6 import QtWidgets, QtGui, QtCore
 
 
-def calculate_color(val, row: int, column: str,
-                    mask, default_color, ok_color, err_color):
-    if column == 'ErrCnt':
-        if val > 0:
-            return QtGui.QBrush(err_color)
-    if mask[row]:
-        return QtGui.QBrush(default_color)  # QtCore.Qt.GlobalColor.white
-    else:
-        return QtGui.QBrush(err_color)
-
-
 DISPLAY_ROLE= QtCore.Qt.ItemDataRole.DisplayRole
 
 
@@ -64,7 +53,7 @@ class DataFrameTable(QtWidgets.QTableView):
                         item.setBackground(QtGui.QColor(err_color))
                     items.append(item)
             self._model.appendRow(items)
-        self.resizeColumnsToContents()
+        # self.resizeColumnsToContents()
         self.resizeRowsToContents()
 
     # def changeEvent(self, a0: QtCore.QEvent | None):
