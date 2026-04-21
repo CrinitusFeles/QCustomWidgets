@@ -33,6 +33,7 @@ class DataFrameTable(QtWidgets.QTableView):
     def __init__(self, drop_columns: list[str] | None = None) -> None:
         super().__init__()
         self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        self.setHorizontalScrollMode(QtWidgets.QTableView.ScrollMode.ScrollPerPixel)
         self._model = DfModel()
         self.setStyleSheet("QTableView::item {padding-right: 30px;}")
         self.setModel(self._model)
