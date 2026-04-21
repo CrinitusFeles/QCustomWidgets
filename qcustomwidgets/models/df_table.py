@@ -24,7 +24,6 @@ class DataFrameTable(QtWidgets.QTableView):
         self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.setHorizontalScrollMode(QtWidgets.QTableView.ScrollMode.ScrollPerPixel)
         self._model = DfModel()
-        self.setStyleSheet("QTableView::item {padding-right: 30px;}")
         self.setModel(self._model)
         self.original_data: pd.DataFrame = pd.DataFrame()
         self.drop_columns: list[str] = drop_columns or []
@@ -32,13 +31,18 @@ class DataFrameTable(QtWidgets.QTableView):
         self._mask: list[bool] | None = None
         self.keep_color_column: str = 'ErrCnt'
         self.keep_color_condition = lambda x: x > 0
+        self._rows = 0
 
     def set_data(self, df: pd.DataFrame, mask: list[bool] | None = None):
         self.original_data = df.copy(True)
         self._mask = copy(mask) if mask else None
-        self._model.clear()
-        self._model.header_labels = [str(key) for key in list(df)
-                                     if key not in self.drop_columns]
+        header: list[str] = [str(key) for key in list(df)
+                             if key not in self.drop_columns]
+        if header !=self._model.header_labels:
+            self._model.header_labels = header
+            self._model.clear()
+        else:
+            self._model.removeRows(0, self._rows)
         self._model.setColumnCount(len(self._model.header_labels))
         data: list[dict] = list(df.T.to_dict().values())
         err_color = ["#DD571C", "#7E0000"][self.isDark()]
@@ -53,6 +57,7 @@ class DataFrameTable(QtWidgets.QTableView):
                         item.setBackground(QtGui.QColor(err_color))
                     items.append(item)
             self._model.appendRow(items)
+        self._rows = len(data)
         # self.resizeColumnsToContents()
         self.resizeRowsToContents()
 
