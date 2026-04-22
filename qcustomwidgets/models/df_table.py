@@ -38,7 +38,7 @@ class DataFrameTable(QtWidgets.QTableView):
         self._mask = copy(mask) if mask else None
         header: list[str] = [str(key) for key in list(df)
                              if key not in self.drop_columns]
-        if header !=self._model.header_labels:
+        if len(header) != len(self._model.header_labels):
             self._model.header_labels = header
             self._model.clear()
         else:
