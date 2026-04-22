@@ -42,6 +42,8 @@ class DataFrameTable(QtWidgets.QTableView):
         if len(header) != len(self._model.header_labels):
             self._model.clear()
         else:
+            item = QtGui.QStandardItem(f'{header[0]}')
+            self._model.setHorizontalHeaderItem(0, item)
             self._model.removeRows(0, self._rows)
         self._model.setColumnCount(len(self._model.header_labels))
         data: list[dict] = list(df.T.to_dict().values())
